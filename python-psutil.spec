@@ -6,12 +6,12 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	0.6.1
+Version:	0.7.0
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 Source0:	http://psutil.googlecode.com/files/%{module}-%{version}.tar.gz
-# Source0-md5:	3cfcbfb8525f6e4c70110e44a85e907e
+# Source0-md5:	2ab9d37401200aa584bf79061fee2587
 URL:		http://code.google.com/p/psutil/
 BuildRequires:	python-devel
 BuildRequires:	python-distribute
