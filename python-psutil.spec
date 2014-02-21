@@ -6,12 +6,12 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	0.7.0
+Version:	1.2.1
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
-Source0:	http://psutil.googlecode.com/files/%{module}-%{version}.tar.gz
-# Source0-md5:	2ab9d37401200aa584bf79061fee2587
+Source0:	https://pypi.python.org/packages/source/p/psutil/%{module}-%{version}.tar.gz
+# Source0-md5:	80c3b251389771ab472e554e6c729c36
 URL:		http://code.google.com/p/psutil/
 BuildRequires:	python-devel
 BuildRequires:	python-distribute
@@ -41,7 +41,7 @@ CC="%{__cc}" \
 CFLAGS="%{rpmcflags}" \
 %{__python} setup.py build
 
-%{?with_tests:%{__python} setup.py test}
+%{?with_tests:export PYTHONPATH=$(pwd); %{__python} setup.py test}
 
 %install
 rm -rf $RPM_BUILD_ROOT
