@@ -8,12 +8,12 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	2.1.3
-Release:	2
+Version:	3.0.1
+Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/p/psutil/%{module}-%{version}.tar.gz
-# Source0-md5:	015a013c46bb9bc30b5c344f26dea0d3
+# Source0-md5:	037dc67b7902d10f49f6fa5404a73a24
 URL:		http://code.google.com/p/psutil/
 BuildRequires:	rpm-pythonprov
 %if %{with python2}
@@ -117,9 +117,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CREDITS README.rst HISTORY.rst
 
-%{py_sitedir}/%{module}
-%attr(755,root,root) %{py_sitedir}/_psutil_linux.so
-%attr(755,root,root) %{py_sitedir}/_psutil_posix.so
+%dir %{py_sitedir}/%{module}
+%{py_sitedir}/%{module}/*.py*
+%attr(755,root,root) %{py_sitedir}/%{module}/_psutil_linux.so
+%attr(755,root,root) %{py_sitedir}/%{module}/_psutil_posix.so
 
 %if "%{py_ver}" > "2.4"
 %{py_sitedir}/%{module}-*.egg-info
@@ -132,9 +133,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CREDITS README.rst HISTORY.rst
 
-%{py3_sitedir}/%{module}
-%attr(755,root,root) %{py3_sitedir}/_psutil_linux.*.so
-%attr(755,root,root) %{py3_sitedir}/_psutil_posix.*.so
+%dir %{py3_sitedir}/%{module}
+%{py3_sitedir}/%{module}/*.py
+%{py3_sitedir}/%{module}/__pycache__
+%attr(755,root,root) %{py3_sitedir}/%{module}/_psutil_linux.*.so
+%attr(755,root,root) %{py3_sitedir}/%{module}/_psutil_posix.*.so
 
 %{py3_sitedir}/%{module}-%{version}-py*.egg-info
 %{_examplesdir}/python3-%{module}-%{version}
