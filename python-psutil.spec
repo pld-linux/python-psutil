@@ -4,17 +4,17 @@
 %bcond_without  python2 # CPython 2.x module
 %bcond_without  python3 # CPython 3.x module
 
-%define 	module	psutil
+%define		module	psutil
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	3.0.1
-Release:	4
+Version:	3.4.1
+Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/p/psutil/%{module}-%{version}.tar.gz
-# Source0-md5:	037dc67b7902d10f49f6fa5404a73a24
-URL:		http://code.google.com/p/psutil/
+# Source0-md5:	237098fa24d25680f52659bdd721e8a9
+URL:		https://github.com/giampaolo/psutil
 BuildRequires:	rpm-pythonprov
 %if %{with python2}
 BuildRequires:	python-devel
@@ -67,14 +67,14 @@ offered by command line tools.
 CC="%{__cc}" \
 CFLAGS="%{rpmcppflags} %{rpmcflags}" \
 %py_build
-%{?with_tests:export PYTHONPATH=$(pwd)/build-2; %{__python} setup.py test}
+%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-2/lib.*); %{__python} test/test_psutil.py}
 %endif
 
 %if %{with python3}
 CC="%{__cc}" \
 CFLAGS="%{rpmcppflags} %{rpmcflags}" \
 %py3_build
-%{?with_tests:export PYTHONPATH=$(pwd)/build-3; %{__python3} setup.py test}
+%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-3/lib.*); %{__python3} test/test_psutil.py}
 %endif
 
 %install
