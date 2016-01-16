@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	tests	# do not perform "make test"
+%bcond_with	tests	# do not perform "make test"
 %bcond_without  python2 # CPython 2.x module
 %bcond_without  python3 # CPython 3.x module
 
@@ -19,6 +19,7 @@ BuildRequires:	rpm-pythonprov
 %if %{with python2}
 BuildRequires:	python-devel
 BuildRequires:	python-distribute
+BuildRequires:	python-mock
 %endif
 %if %{with python3}
 BuildRequires:	python3-devel
