@@ -1,4 +1,5 @@
-#
+# TODO:
+# - Fix tests
 # Conditional build:
 %bcond_with	tests	# do not perform "make test"
 %bcond_without  python2 # CPython 2.x module
@@ -8,12 +9,12 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	3.4.2
+Version:	4.1.0
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/p/psutil/%{module}-%{version}.tar.gz
-# Source0-md5:	53d18a5a2aff970d5658c22921c2bbe6
+# Source0-md5:	017e1023484ebf436d3514ebeaf2e7e9
 URL:		https://github.com/giampaolo/psutil
 BuildRequires:	rpm-pythonprov
 %if %{with python2}
@@ -91,17 +92,6 @@ rm -rf $RPM_BUILD_ROOT
 %py3_install
 %endif
 
-%if %{with python2}
-install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-%endif
-%if %{with python3}
-install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
-cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
-find $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version} -name '*.py' \
-        | xargs sed -i '1s|^#!.*python\b|#!%{__python3}|'
-%endif
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -114,11 +104,11 @@ rm -rf $RPM_BUILD_ROOT
 %{py_sitedir}/%{module}/*.py*
 %attr(755,root,root) %{py_sitedir}/%{module}/_psutil_linux.so
 %attr(755,root,root) %{py_sitedir}/%{module}/_psutil_posix.so
+%{py_sitedir}/%{module}/tests
 
 %if "%{py_ver}" > "2.4"
 %{py_sitedir}/%{module}-*.egg-info
 %endif
-%{_examplesdir}/%{name}-%{version}
 %endif
 
 %if %{with python3}
@@ -131,7 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 %{py3_sitedir}/%{module}/__pycache__
 %attr(755,root,root) %{py3_sitedir}/%{module}/_psutil_linux.*.so
 %attr(755,root,root) %{py3_sitedir}/%{module}/_psutil_posix.*.so
+%{py3_sitedir}/%{module}/tests
 
 %{py3_sitedir}/%{module}-%{version}-py*.egg-info
-%{_examplesdir}/python3-%{module}-%{version}
 %endif
