@@ -1,5 +1,6 @@
 # TODO:
 # - Fix tests
+#
 # Conditional build:
 %bcond_with	tests	# do not perform "make test"
 %bcond_without  python2 # CPython 2.x module
@@ -9,26 +10,30 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	4.1.0
+Version:	4.2.0
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
-Source0:	https://pypi.python.org/packages/source/p/psutil/%{module}-%{version}.tar.gz
-# Source0-md5:	017e1023484ebf436d3514ebeaf2e7e9
+#Source0Download: https://pypi.python.org/simple/psutil/
+Source0:	https://pypi.python.org/packages/a6/bf/5ce23dc9f50de662af3b4bf54812438c298634224924c4e18b7c3b57a2aa/%{module}-%{version}.tar.gz
+# Source0-md5:	713f259f917a0c26acfbb7e6ae632ef7
 URL:		https://github.com/giampaolo/psutil
 BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with python2}
-BuildRequires:	python-devel
-BuildRequires:	python-distribute
+BuildRequires:	python-devel >= 1:2.6
+%if %{with tests}
 BuildRequires:	python-mock
+%if "%{py_ver}" < "2.7"
+BuildRequires:	python-unittest2
+%endif
+%endif
 %endif
 %if %{with python3}
-BuildRequires:	python3-devel
-BuildRequires:	python3-distribute
-BuildRequires:	python3-modules
+BuildRequires:	python3-devel >= 1:3.2
+BuildRequires:	python3-modules >= 1:3.2
 %endif
-BuildRequires:	rpmbuild(macros) >= 1.710
-Requires:	python-modules
+Requires:	python-modules >= 1:2.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -47,7 +52,7 @@ przez narzędzia linii komend.
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Group:		Libraries/Python
-Requires:	python3-modules
+Requires:	python3-modules >= 1:3.2
 
 %description -n python3-%{module}
 Module providing an interface for retrieving information on all
@@ -66,17 +71,15 @@ offered by command line tools.
 
 %build
 %if %{with python2}
-CC="%{__cc}" \
-CFLAGS="%{rpmcppflags} %{rpmcflags}" \
 %py_build
-%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-2/lib.*); %{__python} test/test_psutil.py}
+
+%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-2/lib.*); %{__python} psutil/tests/runner.py}
 %endif
 
 %if %{with python3}
-CC="%{__cc}" \
-CFLAGS="%{rpmcppflags} %{rpmcflags}" \
 %py3_build
-%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-3/lib.*); %{__python3} test/test_psutil.py}
+
+%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-3/lib.*); %{__python3} psutil/tests/runner.py}
 %endif
 
 %install
@@ -85,11 +88,14 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %py_install
 
+%{__rm} -r $RPM_BUILD_ROOT%{py_sitedir}/psutil/tests
 %py_postclean
 %endif
 
 %if %{with python3}
 %py3_install
+
+%{__rm} -r $RPM_BUILD_ROOT%{py3_sitedir}/psutil/tests
 %endif
 
 %clean
@@ -98,30 +104,22 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc CREDITS README.rst HISTORY.rst
-
-%dir %{py_sitedir}/%{module}
-%{py_sitedir}/%{module}/*.py*
-%attr(755,root,root) %{py_sitedir}/%{module}/_psutil_linux.so
-%attr(755,root,root) %{py_sitedir}/%{module}/_psutil_posix.so
-%{py_sitedir}/%{module}/tests
-
-%if "%{py_ver}" > "2.4"
-%{py_sitedir}/%{module}-*.egg-info
-%endif
+%doc CREDITS HISTORY.rst IDEAS LICENSE README.rst
+%dir %{py_sitedir}/psutil
+%attr(755,root,root) %{py_sitedir}/psutil/_psutil_linux.so
+%attr(755,root,root) %{py_sitedir}/psutil/_psutil_posix.so
+%{py_sitedir}/psutil/*.py[co]
+%{py_sitedir}/psutil-%{version}-py*.egg-info
 %endif
 
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc CREDITS README.rst HISTORY.rst
-
-%dir %{py3_sitedir}/%{module}
-%{py3_sitedir}/%{module}/*.py
-%{py3_sitedir}/%{module}/__pycache__
-%attr(755,root,root) %{py3_sitedir}/%{module}/_psutil_linux.*.so
-%attr(755,root,root) %{py3_sitedir}/%{module}/_psutil_posix.*.so
-%{py3_sitedir}/%{module}/tests
-
-%{py3_sitedir}/%{module}-%{version}-py*.egg-info
+%doc CREDITS HISTORY.rst IDEAS LICENSE README.rst
+%dir %{py3_sitedir}/psutil
+%attr(755,root,root) %{py3_sitedir}/psutil/_psutil_linux.*.so
+%attr(755,root,root) %{py3_sitedir}/psutil/_psutil_posix.*.so
+%{py3_sitedir}/psutil/*.py
+%{py3_sitedir}/psutil/__pycache__
+%{py3_sitedir}/psutil-%{version}-py*.egg-info
 %endif
