@@ -10,13 +10,13 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	5.3.0
+Version:	5.4.0
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/psutil/
 Source0:	https://github.com/giampaolo/psutil/archive/release-%{version}.tar.gz
-# Source0-md5:	a7268377ee3ac692805d51f2132217b5
+# Source0-md5:	38c7e18b63ef0af76720a72119f4b2e1
 URL:		https://github.com/giampaolo/psutil
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
