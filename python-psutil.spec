@@ -10,13 +10,13 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	5.4.2
+Version:	5.4.5
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/psutil/
 Source0:	https://github.com/giampaolo/psutil/archive/release-%{version}.tar.gz
-# Source0-md5:	43ecc0c55e0985c8792736ab5721ac3b
+# Source0-md5:	ce3e6b33706dd73eea4c37566eb9a0a1
 URL:		https://github.com/giampaolo/psutil
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
@@ -73,13 +73,13 @@ offered by command line tools.
 %if %{with python2}
 %py_build
 
-%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-2/lib.*); %{__python} psutil/tests/runner.py}
+%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-2/lib.*); %{__python} psutil/tests/__main__.py}
 %endif
 
 %if %{with python3}
 %py3_build
 
-%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-3/lib.*); %{__python3} psutil/tests/runner.py}
+%{?with_tests:export PYTHONPATH=$(echo $(pwd)/build-3/lib.*); %{__python3} psutil/tests/__main__.py}
 %endif
 
 %install
