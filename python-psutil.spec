@@ -11,7 +11,7 @@ Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
 Version:	5.4.5
-Release:	1
+Release:	2
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.python.org/simple/psutil/
