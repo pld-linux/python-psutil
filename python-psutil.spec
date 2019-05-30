@@ -10,13 +10,13 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	5.5.1
+Version:	5.6.2
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/psutil/
 Source0:	https://github.com/giampaolo/psutil/archive/release-%{version}/%{module}-%{version}.tar.gz
-# Source0-md5:	10857df70e12bc7ae477634c0297a2ee
+# Source0-md5:	454b4a34cf08a6ab3688903e4d37e5a8
 URL:		https://github.com/giampaolo/psutil
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
@@ -126,7 +126,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc CREDITS HISTORY.rst IDEAS LICENSE README.rst
+%doc CREDITS HISTORY.rst LICENSE README.rst
 %dir %{py_sitedir}/psutil
 %attr(755,root,root) %{py_sitedir}/psutil/_psutil_linux.so
 %attr(755,root,root) %{py_sitedir}/psutil/_psutil_posix.so
@@ -137,7 +137,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc CREDITS HISTORY.rst IDEAS LICENSE README.rst
+%doc CREDITS HISTORY.rst LICENSE README.rst
 %dir %{py3_sitedir}/psutil
 %attr(755,root,root) %{py3_sitedir}/psutil/_psutil_linux.*.so
 %attr(755,root,root) %{py3_sitedir}/psutil/_psutil_posix.*.so
