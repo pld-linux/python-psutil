@@ -1,0 +1,10 @@
+--- psutil-release-5.6.7/psutil/_pslinux.py.orig	2019-11-26 08:25:07.000000000 +0100
++++ psutil-release-5.6.7/psutil/_pslinux.py	2019-12-30 19:25:22.441270337 +0100
+@@ -1107,6 +1107,7 @@
+                 with open_text(os.path.join(root, 'stat')) as f:
+                     fields = f.read().strip().split()
+                 name = os.path.basename(root)
++                del fields[11:] # newer kernels give more values
+                 (reads, reads_merged, rbytes, rtime, writes, writes_merged,
+                     wbytes, wtime, _, busy_time, _) = map(int, fields)
+                 yield (name, reads, writes, rbytes, wbytes, rtime,
