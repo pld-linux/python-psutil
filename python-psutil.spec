@@ -11,18 +11,18 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
-Version:	5.9.1
+Version:	5.9.2
 Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/psutil/
 Source0:	https://github.com/giampaolo/psutil/archive/release-%{version}/%{module}-%{version}.tar.gz
-# Source0-md5:	78f2a25d70cf8682551a0e4d739d5a3c
+# Source0-md5:	b396b02120ac57cb428e9edec7ed3a9e
 URL:		https://github.com/giampaolo/psutil
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with python2}
-BuildRequires:	python-devel >= 1:2.6
+BuildRequires:	python-devel >= 1:2.7
 %if %{with tests}
 BuildRequires:	python-ipaddress
 BuildRequires:	python-mock
@@ -35,7 +35,7 @@ BuildRequires:	python-unittest2
 BuildRequires:	python3-devel >= 1:3.4
 BuildRequires:	python3-modules >= 1:3.4
 %endif
-Requires:	python-modules >= 1:2.6
+Requires:	python-modules >= 1:2.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -82,25 +82,19 @@ Dokumentacja API modułu Pythona psutil.
 %prep
 %setup -q -n %{module}-release-%{version}
 
-%if %{with tests}
-# prepare subdir to run tests from
-# (cannot use topdir with PYTHONPATH=build-?/lib.* because python finds psutil dir without
-# _psutil_linux module inside in cwd before build-?/lib.*/psutil dir from PYTHONPATH)
-install -d tests
-ln -sf ../scripts tests
-ln -sf ../setup.py tests
-%endif
-
 %build
 %if %{with python2}
 %py_build
 
 %if %{with tests}
-cd tests
-ln -snf ../build-2/lib.*/psutil psutil
+cd build-2/lib.*
+ln -sf ../../scripts .
+ln -sf ../../setup.py .
+LC_ALL=C.UTF-8 \
 PYTHONPATH=$(pwd) \
-%{__python} psutil/tests/__main__.py
-cd ..
+%{__python} -m psutil.tests
+%{__rm} scripts setup.py
+cd ../..
 %endif
 %endif
 
@@ -108,11 +102,13 @@ cd ..
 %py3_build
 
 %if %{with tests}
-cd tests
-ln -snf ../build-3/lib.*/psutil psutil
+cd build-3/lib.*
+ln -sf ../../scripts .
+ln -sf ../../setup.py .
 PYTHONPATH=$(pwd) \
-%{__python3} psutil/tests/__main__.py
-cd ..
+%{__python3} -m psutil.tests
+%{__rm} scripts setup.py
+cd ../..
 %endif
 %endif
 
