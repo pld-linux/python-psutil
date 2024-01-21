@@ -19,6 +19,7 @@ Group:		Development/Languages/Python
 Source0:	https://github.com/giampaolo/psutil/archive/release-%{version}/%{module}-%{version}.tar.gz
 # Source0-md5:	0aeec244e37e0631ade3fc4be30e8f32
 URL:		https://github.com/giampaolo/psutil
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with python2}
@@ -72,6 +73,7 @@ offered by command line tools.
 Summary:	API documentation for Python psutil module
 Summary(pl.UTF-8):	Dokumentacja API modułu Pythona psutil
 Group:		Documentation
+BuildArch:	noarch
 
 %description apidocs
 API documentation for Python psutil module.
