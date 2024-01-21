@@ -32,8 +32,8 @@ BuildRequires:	python-unittest2
 %endif
 %endif
 %if %{with python3}
-BuildRequires:	python3-devel >= 1:3.4
-BuildRequires:	python3-modules >= 1:3.4
+BuildRequires:	python3-devel >= 1:3.6
+BuildRequires:	python3-modules >= 1:3.6
 %endif
 Requires:	python-modules >= 1:2.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -54,7 +54,7 @@ przez narzędzia linii komend.
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Group:		Libraries/Python
-Requires:	python3-modules >= 1:3.4
+Requires:	python3-modules >= 1:3.6
 
 %description -n python3-%{module}
 Module providing an interface for retrieving information on all
