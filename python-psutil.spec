@@ -5,14 +5,14 @@
 %bcond_without	doc	# Sphinx documentation
 %bcond_with	tests	# unit tests
 %bcond_without	python2	# CPython 2.x module
-%bcond_without	python3	# CPython 3.x module
+%bcond_with	python3	# CPython 3.x module (see python3-psutil.spec)
 
 %define		module	psutil
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
 Version:	6.1.1
-Release:	1
+Release:	2
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/psutil/
