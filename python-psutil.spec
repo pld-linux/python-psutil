@@ -1,9 +1,7 @@
-# TODO:
-# - Fix tests (a few fail)
 #
 # Conditional build:
 %bcond_without	doc	# Sphinx documentation
-%bcond_with	tests	# unit tests
+%bcond_with	tests	# unit tests (some require network)
 %bcond_without	python2	# CPython 2.x module
 %bcond_with	python3	# CPython 3.x module (see python3-psutil.spec)
 
@@ -11,6 +9,7 @@
 Summary:	A cross-platform process and system utilities module for Python
 Summary(pl.UTF-8):	Wieloplatformowe narzędzia do procesów i systemu dla Pythona
 Name:		python-%{module}
+# keep 6.x here for python2 support
 Version:	6.1.1
 Release:	3
 License:	BSD
@@ -25,19 +24,23 @@ BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.7
 %if %{with tests}
+BuildRequires:	python-enum34
+BuildRequires:	python-futures
 BuildRequires:	python-ipaddress
-BuildRequires:	python-mock
-%if "%{py_ver}" < "2.7"
-BuildRequires:	python-unittest2
-%endif
+BuildRequires:	python-mock >= 1.0.1
+BuildRequires:	python-pytest >= 4.6.11
 %endif
 %endif
 %if %{with python3}
 BuildRequires:	python3-devel >= 1:3.6
 BuildRequires:	python3-modules >= 1:3.6
+%if %{with tests}
+BuildRequires:	python3-pytest
+%endif
 %endif
 %if %{with doc}
-BuildRequires:	sphinx-pdg
+BuildRequires:	python-sphinx_rtd_theme
+BuildRequires:	sphinx-pdg-2
 %endif
 Requires:	python-modules >= 1:2.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -96,9 +99,11 @@ cd build-2/lib.*
 ln -sf ../../scripts .
 ln -sf ../../setup.py .
 LC_ALL=C.UTF-8 \
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd) \
 %{__python} -m psutil.tests
 %{__rm} scripts setup.py
+%{__rm} -rf .pytest_cache
 cd ../..
 %endif
 %endif
@@ -110,16 +115,18 @@ cd ../..
 cd build-3/lib.*
 ln -sf ../../scripts .
 ln -sf ../../setup.py .
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd) \
 %{__python3} -m psutil.tests
 %{__rm} scripts setup.py
+%{__rm} -rf .pytest_cache
 cd ../..
 %endif
 %endif
 
 %if %{with doc}
 %{__make} -C docs html \
-	SPHINXBUILD=sphinx-build-3
+	SPHINXBUILD=sphinx-build-2
 %endif
 
 %install
@@ -155,7 +162,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc CREDITS HISTORY.rst LICENSE README.rst
+%doc CREDITS HISTORY.rst LICENSE README.rst SECURITY.md
 %dir %{py3_sitedir}/psutil
 %attr(755,root,root) %{py3_sitedir}/psutil/_psutil_linux.*.so
 %attr(755,root,root) %{py3_sitedir}/psutil/_psutil_posix.*.so
